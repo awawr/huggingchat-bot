@@ -5,8 +5,8 @@ namespace huggingchat_bot
 {
     internal class Program
     {
-		private ulong _channelid = 1102286626379534416;
-		private string _token = "";
+	private ulong _channelid = 1102286626379534416;
+	private string _token = "";
 		
         private HuggingChat _chat = new HuggingChat();
         private bool _processing = false;
