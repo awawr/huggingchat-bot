@@ -5,29 +5,24 @@ namespace huggingchat_bot
 {
     internal class Program
     {
-	private ulong _channelid = 1102286626379534416;
-	private string _token = "";
-		
-        private HuggingChat _chat = new HuggingChat();
+#pragma warning disable CS8618
+        private HuggingChat _chat;
+        private DiscordSocketClient _client;
+#pragma warning restore CS8618
         private bool _processing = false;
-
-        private DiscordSocketClient _client = new DiscordSocketClient(
-            new DiscordSocketConfig() 
-            { 
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent 
-            });
 
         public static Task Main() => new Program().MainAsync();
 
         public async Task MainAsync()
         {
+            _chat = new HuggingChat(Config.Username, Config.Password, Config.UseSearch);
             _client = new DiscordSocketClient(new DiscordSocketConfig() { GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent });
             _client.Log += Log;
             _client.MessageReceived += MessageReceived;
 
-            await _client.LoginAsync(TokenType.Bot, _token);
+            await _client.LoginAsync(TokenType.Bot, Config.Token);
             await _client.StartAsync();
-            // await _client.SetGameAsync("you sleep", type: ActivityType.Watching);
+            await _client.SetGameAsync("you sleep", type: ActivityType.Watching);
 
             Console.ReadKey(true);
             _chat.Quit();
@@ -43,7 +38,7 @@ namespace huggingchat_bot
         {
             if (message.Author.Id == _client.CurrentUser.Id)
                 return Task.CompletedTask;
-            if (message.Channel.Id != _channelid)
+            if (message.Channel.Id != Config.ChannelID)
                 return Task.CompletedTask;
             if (string.IsNullOrWhiteSpace(message.CleanContent))
                 return Task.CompletedTask;
