@@ -30,9 +30,10 @@ namespace huggingchat_bot
             _driver.FindElement(By.XPath("//button[contains(text(),'Login')]")).Click();
             _driver.FindElement(By.XPath("//button[contains(text(),'Authorize')]")).Click();
 
+            Thread.Sleep(250);
+            Ask("Please keep all your responses as short and simple as possible from now on.");
             if (useSearch)
             {
-                Thread.Sleep(250);
                 _driver.ExecuteScript("arguments[0].click();", _driver.FindElement(By.XPath("//input[@name='useSearch']")));
             }
         }
